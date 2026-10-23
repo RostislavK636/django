@@ -7,6 +7,6 @@ def index(request):
 def course(request):
     context = {
         'title': " Мои курсы" , 
-        'course': 0
+        'course': []
     }
     return render(request, 'main/index.html', context)

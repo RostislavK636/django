@@ -7,7 +7,7 @@
   </head>
   <body>
     <header>
-      <h1>Платформа обучения</h1>
+      <h1>{{title}}</h1>
     </header>
 
     <main>
@@ -19,7 +19,7 @@
       <section>
         <h2>Курсы</h2>
         <p>Выберите курс, чтобы начать обучение.</p>
-        {%if course == 0%} Курсов пока нет {%endif%}
+        {%if !course%} Курсов пока нет {%endif%}
       </section>
     </main>
 
