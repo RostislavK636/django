@@ -5,4 +5,8 @@ from django.http import HttpResponse
 def index(request):
     return HttpResponse('Платформа обучения')
 def course(request):
-    return HttpResponse('Здесь будет список курсов')
+    context = {
+        'title': " Мои курсы" , 
+        'course': 0
+    }
+    return render(request, 'main/index.html', context)
