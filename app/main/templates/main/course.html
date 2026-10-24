@@ -1,4 +1,5 @@
-{% extends "main/base.html" %} {%load static%} {% block content %}
+{% extends "main/base.html" %} {%load static%} {% block title %}
+{{title}}{%endblock %} {% block content %}
 
 <section>
   <h2>Добро пожаловать!</h2>
@@ -12,4 +13,11 @@
   <p class="empty-state">Курсов пока нет</p>
   {% endif %}
 </section>
-{% endblock %}
+{% for curs in course %}
+<div class="card">
+  <h5>{{curs.name}}</h5>
+  <p>{{curs.description}}</p>
+  <b> {{curs.price}} </b>
+</div>
+
+{% endfor %} {% endblock %}

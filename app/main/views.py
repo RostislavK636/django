@@ -10,6 +10,22 @@ def index(request):
 def course(request):
     context = {
         'title': " Мои курсы" , 
-        'course': []
+        'course': [
+            {
+                'name': 'Основы Python',
+                'description': 'Практический курс по основам программирования на Python.',
+                'price': 4990,
+            },
+            {
+                'name': 'Веб-разработка на Django',
+                'description': 'Создание веб-приложений на Python и Django.',
+                'price': 6990,
+            },
+            {
+                'name': 'Основы HTML и CSS',
+                'description': 'Создание и стилизация современных веб-страниц.',
+                'price': 3990,
+            },
+        ]
     }
     return render(request, 'main/course.html', context)
