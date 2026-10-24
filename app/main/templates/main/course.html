@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+  <section>
+    <h2>{{ title }}</h2>
+    {% if not course %}
+      <p class="empty-state">Курсов пока нет</p>
+    {% endif %}
+  </section>
+{% endblock %}
