@@ -15,9 +15,11 @@
 </section>
 {% for curs in course %}
 <div class="card">
-  <h5>{{curs.name}}</h5>
-  <p>{{curs.description}}</p>
-  <b> {{curs.price}} </b>
+  {% for i in Course %}
+  <h5>{{i.name}}</h5>
+  <p>{{i.description}}</p>
+  <b> {{i.price}} </b>
+  {% endfor %}
 </div>
 
 {% endfor %} {% endblock %}

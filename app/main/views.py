@@ -1,31 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from main.models import Course
 # Create your views here.
 def index(request):
+    course = Course.objects.all()
     context = {
-        'title': "Платформа для обучения" 
+        'title': "Платформа для обучения" ,
+        
     }
     return render(request, 'main/index.html', context)
 def course(request):
     context = {
         'title': " Мои курсы" , 
-        'course': [
-            {
-                'name': 'Основы Python',
-                'description': 'Практический курс по основам программирования на Python.',
-                'price': 4990,
-            },
-            {
-                'name': 'Веб-разработка на Django',
-                'description': 'Создание веб-приложений на Python и Django.',
-                'price': 6990,
-            },
-            {
-                'name': 'Основы HTML и CSS',
-                'description': 'Создание и стилизация современных веб-страниц.',
-                'price': 3990,
-            },
-        ]
-    }
+        'course': course}
     return render(request, 'main/course.html', context)
