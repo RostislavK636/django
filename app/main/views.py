@@ -10,7 +10,7 @@ def index(request):
     }
     return render(request, 'main/index.html', context)
 def course(request):
-    course = Course.objects.all()
+    course = Course.objects.filter(price__gte=10)
     context = {
         
         'title': " Мои курсы" , 

@@ -15,9 +15,12 @@
 </section>
 {% for curs in course %}
 <div class="card">
-  <h5>{{i.name}}</h5>
-  <p>{{i.description}}</p>
-  <b> {{i.price}} </b>
+  {% if curs.image %}
+  <img src="{{ curs.image.url }}" alt="нет фото" />
+  {% endif %}
+  <h5>{{curs.name}}</h5>
+  <p>{{curs.description}}</p>
+  <b> {{curs.price}} </b>
 </div>
 
 {% endfor %} {% endblock %}
