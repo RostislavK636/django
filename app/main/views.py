@@ -3,10 +3,10 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse('Платформа обучения')
+    return render(request, 'main/index.html')
 def course(request):
     context = {
         'title': " Мои курсы" , 
         'course': []
     }
-    return render(request, 'main/index.html', context)
+    return render(request, 'main/course.html', context)

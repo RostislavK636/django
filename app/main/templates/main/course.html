@@ -1,0 +1,15 @@
+{% extends "main/base.html" %} {%load static%} {% block content %}
+
+<section>
+  <h2>Добро пожаловать!</h2>
+  <p>Учитесь программированию и создавайте свои первые проекты.</p>
+</section>
+
+<section>
+  <h2>Курсы</h2>
+  <p>Выберите курс, чтобы начать обучение.</p>
+  {% if not course %}
+  <p class="empty-state">Курсов пока нет</p>
+  {% endif %}
+</section>
+{% endblock %}
