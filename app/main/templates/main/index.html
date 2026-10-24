@@ -1,6 +1,7 @@
 {% extends "main/base.html" %} {%load static%} {% block content %}
 
-<h2>Платформа обучения</h2>
+<h2>{{title}}</h2>
 <p>Учитесь программированию и создавайте свои первые проекты.</p>
+<button> <a href= '{% url "main:courses" %}'> Выбрать куры <a/> </button>
 
 {% endblock %}
