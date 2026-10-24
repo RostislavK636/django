@@ -1,15 +1,12 @@
 from django.shortcuts import render
+from django.http import HttpResponse
 
+# Create your views here.
 def index(request):
-    context = {
-        'title': 'Платформа обучения',
-    }
-    return render(request, 'main/index.html', context)
-
-
+    return HttpResponse('Платформа обучения')
 def course(request):
     context = {
-        'title': 'Мои курсы',
-        'course': [],
+        'title': " Мои курсы" , 
+        'course': []
     }
-    return render(request, 'main/course.html', context)
+    return render(request, 'main/index.html', context)
