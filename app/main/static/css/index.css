@@ -84,6 +84,13 @@ section> :last-child {
   border: 1px solid #dce4ef;
   border-radius: 12px;
   background: #fff;
+  min-width: 0;
+}
+
+.card img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 .card h5 {

@@ -1,0 +1,15 @@
+{% extends "main/base.html" %} {% block title %}{{ title }}{% endblock %}
+{%block content %}
+<section>
+  <h2>{{ course.name }}</h2>
+  <p>{{ course.description }}</p>
+  <p>{{ course.price }} ₽</p>
+
+  <a href="{% url 'main:courses' %}">Назад к курсам</a>
+</section>
+<section>
+  {% if course.image %}
+  <img src="{{course.image.url}}" alt="нет фото" />
+  {% endif %}
+</section>
+{% endblock %}

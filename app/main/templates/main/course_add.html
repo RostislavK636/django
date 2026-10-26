@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %} {% load static %} {% block title %}Добавить
+курс{% endblock %} {% block content %}
+<form method="post">
+  {% csrf_token %}
+  <div>
+    <label for="course-name">Название</label>
+    <input id="course-name" type="text" name="name" maxlength="30" required />
+  </div>
+  <div>
+    <label for="course-description">Описание</label>
+    <textarea
+      id="course-description"
+      name="description"
+      maxlength="100"></textarea>
+  </div>
+  <div>
+    <label for="course-price">Цена</label>
+    <input
+      id="course-price"
+      type="number"
+      name="price"
+      min="0"
+      step="0.01"
+      required />
+  </div>
+  <button type="submit">Создать</button>
+</form>
+{% endblock %}

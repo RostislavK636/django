@@ -4,6 +4,7 @@
 <section>
   <h2>Добро пожаловать!</h2>
   <p>Учитесь программированию и создавайте свои первые проекты.</p>
+  <a href="{% url 'main:add' %}">Добавить Крус</a>
 </section>
 
 <section>
@@ -21,6 +22,9 @@
   <h5>{{curs.name}}</h5>
   <p>{{curs.description}}</p>
   <b> {{curs.price}} </b>
+  <h5>
+    <a href="{% url 'main:course_detail' curs.id %}"> {{ curs.name }} </a>
+  </h5>
 </div>
 
 {% endfor %} {% endblock %}
