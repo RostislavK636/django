@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from main.models import Course
 from django.shortcuts import render, get_object_or_404, redirect
 from main.forms import CourseForm
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 def index(request):
     context = {
@@ -72,3 +73,36 @@ def deleted_course(request):
         'courses': courses,
     }
     return render(request, 'main/course_deleted.html', context)
+
+def course_deleted(request, course_id):
+    if request.method == 'POST':
+        course = get_object_or_404(Course, id=course_id, is_deleted=True,)
+        if course.image:
+            course.image.delete(save=False)
+        course.delete()
+    return redirect('main:deleted_course')
+
+
+def login_view(request):
+    error = ''
+    if request.method=='POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password,
+        )
+
+        if user is not None:
+            login(request, user)
+            return redirect('main:courses')
+        error = 'Неправильный логин или пароль'
+    return render(request, 'main/login.html', {'error': error})
+
+def logout_view(request):
+    if request.method == 'POST':
+        logout(request)
+
+    return redirect('main:login')

@@ -8,6 +8,10 @@
     {%csrf_token%}
     <button type="submit">Востановить</button>
   </form>
+  <form action="{%url 'main:course_deleted' curs.id%}" method="post">
+    {%csrf_token%}
+    <button type="submit">Удалить совсем</button>
+  </form>
 </div>
 {% empty %}
 <p>Удалённых курсов пока нет.</p>

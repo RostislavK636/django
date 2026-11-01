@@ -14,6 +14,14 @@
         <a href="{% url 'main:index' %}">Главная</a>
         <a href="{% url 'main:courses' %}">Курсы</a>
         <a href="{% url 'main:deleted_course' %}">Удалённые курсы</a>
+        {% if user.is_authenticated %} <p> Вы вошли как {{user.username}} </p> 
+        <form action="{% url "main:logout"%}" method='post'>
+          {%csrf_token%}
+          <button type='submit'>Выйти</button>
+        </form>
+        {% else %}
+        <a href="{%url 'main:login'%}"> Войти </a>
+        {% endif %}
       </nav>
     </header>
 
