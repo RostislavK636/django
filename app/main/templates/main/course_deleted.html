@@ -1,0 +1,15 @@
+{%extends 'main/base.html'%} {% block title %}Удалённые курсы{% endblock %}
+{%block content %} {% for curs in courses %}
+
+<div class="card">
+  <h3>{{ curs.name }}</h3>
+  <p>{{ curs.price }}</p>
+  <form action="{% url 'main:course_restore' curs.id%}" method="post">
+    {%csrf_token%}
+    <button type="submit">Востановить</button>
+  </form>
+</div>
+{% empty %}
+<p>Удалённых курсов пока нет.</p>
+
+{% endfor %} {% endblock %}

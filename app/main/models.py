@@ -7,6 +7,7 @@ class Course(models.Model):
     description = models.CharField(max_length=100, blank=True, null=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(upload_to='courses/', blank=True, null=True)
+    is_deleted = models.BooleanField(default=False)
     def __str__(self):
         return self.name
 

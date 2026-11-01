@@ -5,14 +5,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from main.forms import CourseForm
 # Create your views here.
 def index(request):
-    
     context = {
         'title': "Платформа для обучения" ,
-        
     }
     return render(request, 'main/index.html', context)
 def course(request):
-    course = Course.objects.all()
+    course = Course.objects.filter(is_deleted=False)
     context = {
         
         'title': " Мои курсы" , 
@@ -54,9 +52,23 @@ def course_edit(request, course_id):
             return redirect('main:courses')
     else:
         form = CourseForm(instance=course)
-
-
     context = {
         'form': form,
     }
     return render(request, 'main/course_edit.html', context)
+
+def course_restore(request, course_id):
+    if request.method == 'POST':
+        course = get_object_or_404(Course, id=course_id)
+        course.is_deleted = not course.is_deleted
+        course.save()
+
+    return redirect('main:courses')
+
+def deleted_course(request):
+    courses= Course.objects.filter(is_deleted=True)
+
+    context={
+        'courses': courses,
+    }
+    return render(request, 'main/course_deleted.html', context)

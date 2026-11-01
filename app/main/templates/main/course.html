@@ -26,6 +26,10 @@
     <a href="{% url 'main:course_detail' curs.id %}"> Подробнее </a>
     <p><a href="{%url 'main:course_edit' curs.id %}"> Изменить </a></p>
   </h5>
+  <form method="post" action="{% url 'main:course_restore' curs.id %}">
+    {% csrf_token %}
+    <button type="submit">Удалить</button>
+  </form>
 </div>
 
 {% endfor %} {% endblock %}
