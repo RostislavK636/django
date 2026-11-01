@@ -126,3 +126,7 @@ footer p {
     padding: 24px;
   }
 }
+
+.input-error {
+  border: 2px solid red;
+}

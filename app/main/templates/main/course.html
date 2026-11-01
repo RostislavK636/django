@@ -23,7 +23,8 @@
   <p>{{curs.description}}</p>
   <b> {{curs.price}} </b>
   <h5>
-    <a href="{% url 'main:course_detail' curs.id %}"> {{ curs.name }} </a>
+    <a href="{% url 'main:course_detail' curs.id %}"> Подробнее </a>
+    <p><a href="{%url 'main:course_edit' curs.id %}"> Изменить </a></p>
   </h5>
 </div>
 

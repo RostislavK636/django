@@ -1,7 +1,7 @@
 
 from django.http import HttpResponse
 from main.models import Course
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from main.forms import CourseForm
 # Create your views here.
 def index(request):
@@ -12,7 +12,7 @@ def index(request):
     }
     return render(request, 'main/index.html', context)
 def course(request):
-    course = Course.objects.filter(price__gte=10)
+    course = Course.objects.all()
     context = {
         
         'title': " Мои курсы" , 
@@ -30,9 +30,33 @@ def course_detail(request, course_id):
 
 def course_add(request):
     if request.method == 'POST':
-        form = CourseForm(request.POST)
+        form = CourseForm(request.POST, request.FILES)
+
         if form.is_valid():
-            print(form.cleaned_data)
-        else:
-            print(form.errors)
-    return render(request, 'main/course_add.html')
+            form.save()
+            return redirect('main:courses')
+    else:
+        form = CourseForm()
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'main/course_add.html', context)
+
+
+def course_edit(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    if request.method == 'POST':
+        form = CourseForm(request.POST, request.FILES, instance=course)
+        if form.is_valid():
+            form.save()
+            return redirect('main:courses')
+    else:
+        form = CourseForm(instance=course)
+
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'main/course_edit.html', context)
