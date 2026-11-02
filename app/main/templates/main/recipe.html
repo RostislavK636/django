@@ -2,12 +2,12 @@
 
 {% block title %}{{title}}{% endblock  %}
 
-{% block context %}
+{% block content %}
 {% if recipe %}
 {% for i in recipe %}
 <div class='card'>
     <h5>{{i.name}}</h5>
-    <p><b>{{i.category}}</b></p>
+    <p>Категория: <b>{{i.Category.name}}</b></p>
 </div>
 {% endfor %}
 
