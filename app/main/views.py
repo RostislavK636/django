@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from main.models import Course, Recipe, Category
 from django.shortcuts import render, get_object_or_404, redirect
-from main.forms import CourseForm, RecipeForm
+from main.forms import CourseForm, RecipeForm, CategoryForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.admin.views.decorators import staff_member_required
 # Create your views here.
@@ -164,3 +164,18 @@ def recipe_filter(request, name_category):
         'recipe': recipe
     }    
     return redirect(request, 'main:recipe', context)
+
+@staff_member_required(login_url='main:login')
+def category_add(request):
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('main:recipe')
+    else: 
+        form = CategoryForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'main/category_add.html', context)

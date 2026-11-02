@@ -4,6 +4,7 @@
 
 {% block filter %}
 <p><a href="{% url "main:recipe_add" %}">Добавить курс</a></p>
+<p><a href="{% url "main:category_add" %}">Добавить категорию</a></p>
 <a href="{% url "main:recipe" %}">Все категории</a>
 {% for category in categories %}
 <a href="{% url "main:recipe" %}?category={{category.id}}">{{category.name}}</a>
@@ -20,5 +21,8 @@
     <a href="{% url "main:recipe_edit" i.id %}">Изменить рецепт</a>
 </div>
 {% endfor %}
+
+{% else %}
+<h3>Рецептов пока что нет</h3>
 {% endif %}
 {% endblock  %}

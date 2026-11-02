@@ -20,6 +20,6 @@ urlpatterns = [
     path('recipe/', views.recipe, name='recipe'),
     path('recipe/add', views.recipe_add, name='recipe_add'),
     path('recipe/<int:recipe_id>/edit', views.recipe_edit, name='recipe_edit'),
-
+    path('recipe/category_add', views.category_add, name='category_add')
 ]
 
