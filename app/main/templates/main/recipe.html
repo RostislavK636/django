@@ -2,14 +2,23 @@
 
 {% block title %}{{title}}{% endblock  %}
 
+{% block filter %}
+<p><a href="{% url "main:recipe_add" %}">Добавить курс</a></p>
+<a href="{% url "main:recipe" %}">Все категории</a>
+{% for category in categories %}
+<a href="{% url "main:recipe" %}?category={{category.id}}">{{category.name}}</a>
+{% endfor %}
+    
+</form>
+{% endblock  %}
 {% block content %}
 {% if recipe %}
 {% for i in recipe %}
 <div class='card'>
     <h5>{{i.name}}</h5>
     <p>Категория: <b>{{i.Category.name}}</b></p>
+    <a href="{% url "main:recipe_edit" i.id %}">Изменить рецепт</a>
 </div>
 {% endfor %}
-
 {% endif %}
 {% endblock  %}

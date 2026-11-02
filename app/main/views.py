@@ -1,8 +1,8 @@
 
 from django.http import HttpResponse
-from main.models import Course, Recipe
+from main.models import Course, Recipe, Category
 from django.shortcuts import render, get_object_or_404, redirect
-from main.forms import CourseForm
+from main.forms import CourseForm, RecipeForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.admin.views.decorators import staff_member_required
 # Create your views here.
@@ -113,9 +113,54 @@ def logout_view(request):
 
 
 def recipe(request):
+    category_id = request.GET.get('category', '')
     recipe = Recipe.objects.all()
+    if category_id.isdecimal():
+        recipe = Recipe.objects.filter(Category_id = category_id)
     context ={
         'title': "Список курсов",
-        'recipe': recipe
+        'recipe': recipe,
+        'categories': Category.objects.all()
     }
     return render(request, 'main/recipe.html', context)
+
+@staff_member_required(login_url='main:login')
+def recipe_add(request):
+    if request.method == "POST":
+        form = RecipeForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect('main:recipe')
+    else:
+        form = RecipeForm()
+
+    context = {
+        'form': form
+    }
+    return render(request, 'main/recipe_add.html', context)
+
+@staff_member_required(login_url='main:login')
+def recipe_edit(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id)
+    if request.method == 'POST':
+        form = RecipeForm(request.POST, instance=recipe)
+
+        if form.is_valid():
+            form.save()
+            return redirect('main:recipe')
+    else:
+        form = RecipeForm(instance=recipe)
+    context = {
+        'form': form
+    }
+    return render(request, 'main/recipe_edit.html', context)
+
+
+def recipe_filter(request, name_category):
+    if request.method == 'POST':
+        form = Recipe.objects.filter(Category = name_category)
+    context = {
+        'recipe': recipe
+    }    
+    return redirect(request, 'main:recipe', context)

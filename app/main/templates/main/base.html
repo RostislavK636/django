@@ -24,6 +24,7 @@
         <a href="{%url 'main:login'%}"> Войти </a>
         {% endif %}
       </nav>
+      {% block filter %}{% endblock filter %}
     </header>
 
     <main>{% block content %}{% endblock %}</main>
