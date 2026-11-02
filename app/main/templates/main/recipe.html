@@ -1,0 +1,15 @@
+{% extends "main/base.html" %}
+
+{% block title %}{{title}}{% endblock  %}
+
+{% block context %}
+{% if recipe %}
+{% for i in recipe %}
+<div class='card'>
+    <h5>{{i.name}}</h5>
+    <p><b>{{i.category}}</b></p>
+</div>
+{% endfor %}
+
+{% endif %}
+{% endblock  %}

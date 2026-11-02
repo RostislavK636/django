@@ -1,9 +1,10 @@
 
 from django.http import HttpResponse
-from main.models import Course
+from main.models import Course, Recipe
 from django.shortcuts import render, get_object_or_404, redirect
 from main.forms import CourseForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.admin.views.decorators import staff_member_required
 # Create your views here.
 def index(request):
     context = {
@@ -12,8 +13,7 @@ def index(request):
     return render(request, 'main/index.html', context)
 def course(request):
     course = Course.objects.filter(is_deleted=False)
-    context = {
-        
+    context = {    
         'title': " Мои курсы" , 
         'course': course}
     return render(request, 'main/course.html', context)
@@ -27,6 +27,7 @@ def course_detail(request, course_id):
     }
     return render(request, 'main/course_detail.html', context)
 
+@staff_member_required(login_url='main:login')
 def course_add(request):
     if request.method == 'POST':
         form = CourseForm(request.POST, request.FILES)
@@ -43,7 +44,7 @@ def course_add(request):
 
     return render(request, 'main/course_add.html', context)
 
-
+@staff_member_required(login_url='main:login')
 def course_edit(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     if request.method == 'POST':
@@ -58,6 +59,7 @@ def course_edit(request, course_id):
     }
     return render(request, 'main/course_edit.html', context)
 
+@staff_member_required(login_url='main:login')
 def course_restore(request, course_id):
     if request.method == 'POST':
         course = get_object_or_404(Course, id=course_id)
@@ -66,6 +68,7 @@ def course_restore(request, course_id):
 
     return redirect('main:courses')
 
+@staff_member_required(login_url='main:login')
 def deleted_course(request):
     courses= Course.objects.filter(is_deleted=True)
 
@@ -74,6 +77,7 @@ def deleted_course(request):
     }
     return render(request, 'main/course_deleted.html', context)
 
+@staff_member_required(login_url='main:login')
 def course_deleted(request, course_id):
     if request.method == 'POST':
         course = get_object_or_404(Course, id=course_id, is_deleted=True,)
@@ -106,3 +110,12 @@ def logout_view(request):
         logout(request)
 
     return redirect('main:login')
+
+
+def recipe(request):
+    recipe = Recipe.objects.all()
+    context ={
+        'title': "Список курсов",
+        'recipe': recipe
+    }
+    return render(request, 'main/recipe.html', context)
