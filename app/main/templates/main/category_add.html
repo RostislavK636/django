@@ -7,6 +7,6 @@
     {% csrf_token %}
     <p>Название категории: {{form.name}}</p>
     {{form.name.errors}}
-    <button method='post'>Добавить</button>
+    <button method='submit'>Добавить</button>
 </form>
 {% endblock  %}

@@ -5,19 +5,40 @@
 {% block filter %}
 <p><a href="{% url "main:recipe_add" %}">Добавить курс</a></p>
 <p><a href="{% url "main:category_add" %}">Добавить категорию</a></p>
-<a href="{% url "main:recipe" %}">Все категории</a>
+<form action="" method='get'>
+    <input type="text" name='search', value='{{search}}'>
+    <button type='submit'>Найти</button>
+</form>
+<p><a href="{% url "main:recipe" %}">Все категории</a></p>
 {% for category in categories %}
-<a href="{% url "main:recipe" %}?category={{category.id}}">{{category.name}}</a>
+<div>
+    <a href="{% url 'main:recipe' %}?category={{ category.id }}">
+        {{ category.name }}
+    </a>
+
+    <a href="{% url 'main:category_edit' category.id %}">
+        Изменить
+    </a>
+
+    <form action="{% url 'main:category_delete' category.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Удалить</button>
+    </form>
+</div>
 {% endfor %}
     
 </form>
 {% endblock  %}
 {% block content %}
+{% for message in messages %}
+<p>{{message}}</p>
+{% endfor %}
 {% if recipe %}
 {% for i in recipe %}
 <div class='card'>
     <h5>{{i.name}}</h5>
-    <p>Категория: <b>{{i.Category.name}}</b></p>
+    <p>Категория: <b>{{i.Category.name}}</b> <a href="{% url "main:category_edit" i.Category.id%}">Изменить</a>
+    </p>
     <a href="{% url "main:recipe_edit" i.id %}">Изменить рецепт</a>
 </div>
 {% endfor %}

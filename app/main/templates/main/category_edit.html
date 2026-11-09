@@ -1,0 +1,12 @@
+{% extends "main/base.html" %}
+
+{% block title %}Изменить категорию{% endblock  %}
+
+{% block content %}
+<form method='post'>
+    {% csrf_token %}
+    <p>Изменить название: {{form.name}}</p>
+    {{form.name.errors}}
+    <button type='submit'>Изменить</button>
+</form>
+{% endblock  %}

@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from main.forms import CourseForm, RecipeForm, CategoryForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import messages
 # Create your views here.
 def index(request):
     context = {
@@ -115,12 +116,21 @@ def logout_view(request):
 def recipe(request):
     category_id = request.GET.get('category', '')
     recipe = Recipe.objects.all()
+    search = request.GET.get('search', '').strip()
+    if search:
+        recipe = recipe.filter(name__icontains=search)
     if category_id.isdecimal():
-        recipe = Recipe.objects.filter(Category_id = category_id)
+        recipe = recipe.objects.filter(Category_id = category_id)
+    print('Всего рецептов:', Recipe.objects.count())
+    print('После фильтров:', recipe.count())
+    print('Поиск:', search, 'Категория:', category_id)
+    print(list(Recipe.objects.values_list('name', flat=True)))
     context ={
         'title': "Список курсов",
         'recipe': recipe,
-        'categories': Category.objects.all()
+        'categories': Category.objects.all(),
+        'search': search,
+        'category_id': category_id,
     }
     return render(request, 'main/recipe.html', context)
 
@@ -156,15 +166,6 @@ def recipe_edit(request, recipe_id):
     }
     return render(request, 'main/recipe_edit.html', context)
 
-
-def recipe_filter(request, name_category):
-    if request.method == 'POST':
-        form = Recipe.objects.filter(Category = name_category)
-    context = {
-        'recipe': recipe
-    }    
-    return redirect(request, 'main:recipe', context)
-
 @staff_member_required(login_url='main:login')
 def category_add(request):
     if request.method == 'POST':
@@ -179,3 +180,33 @@ def category_add(request):
         'form': form
     }
     return render(request, 'main/category_add.html', context)
+
+@staff_member_required(login_url='main:login')
+def category_edit(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    if request.method == 'POST':
+        form= CategoryForm(request.POST, instance=category)
+        
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Успешно изменена')
+            return redirect('main:recipe')
+    else: 
+        form = CategoryForm(instance=category)
+    context = {
+        'form': form
+    }
+    return render(request, 'main/category_edit.html', context)
+
+@staff_member_required(login_url='main:login')
+def category_delete(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    if request.method == 'POST':
+        if Recipe.objects.filter(Category_id=category.id).exists():
+            messages.error(request, "Нельзя удалить категорию, в ней есть рецепты")
+        else: 
+            messages.success(request, 'Категория удалена')
+            category.delete()
+    return redirect('main:recipe')
+        
+        
