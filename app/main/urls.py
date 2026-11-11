@@ -22,6 +22,12 @@ urlpatterns = [
     path('recipe/<int:recipe_id>/edit', views.recipe_edit, name='recipe_edit'),
     path('recipe/category_add', views.category_add, name='category_add'),
     path('recipe/<int:category_id>/category_edit', views.category_edit, name='category_edit'),
-    path('recipe/<int:category_id>category_delete', views.category_delete, name='category_delete')
+    path('recipe/<int:category_id>category_delete', views.category_delete, name='category_delete'),
+    path('api/recipes/', views.recipe_api, name='recipe_api'),
+    path(
+    'api/recipes/<int:pk>/',
+    views.recipe_detail_api,
+    name='recipe_detail_api'
+),
 ]
 

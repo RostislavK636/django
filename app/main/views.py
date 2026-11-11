@@ -6,6 +6,11 @@ from main.forms import CourseForm, RecipeForm, CategoryForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
+
+
+'для апи'
+from django.http import JsonResponse
+import json
 # Create your views here.
 def index(request):
     context = {
@@ -209,4 +214,61 @@ def category_delete(request, category_id):
             category.delete()
     return redirect('main:recipe')
         
-        
+
+
+
+'работа с апи'
+def recipe_api(request):
+    if request.method == 'GET':
+        recipe = Recipe.objects.all()
+
+        data = []
+
+        for item in recipe:
+            data.append({
+                'id': item.pk,
+                'name': item.name,
+            })
+        return JsonResponse({'recipe': data})
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        name= data.get('name')
+        category_id = data.get('category_id')
+        if not name:
+            return JsonResponse(
+                {'error': 'Введите название'},
+                status=400
+            )
+        if len(name)> 20:
+            return JsonResponse(
+                {'error': 'Название слишком длинное'},
+                status =400
+            )
+        if type(category_id) is not int:
+            return JsonResponse(
+                {'error': 'ID категории должен быть целым числом'},
+                status=400
+            )
+        if not Category.objects.filter(pk=category_id).exists():
+            return JsonResponse(
+                {'error': 'Категория не найдена'},
+            status=400
+            )
+        recipe = Recipe.objects.create(
+            name=name,
+            Category_id=category_id
+        )
+        return JsonResponse(
+            { 'id': recipe.pk, 'name': recipe.name},
+            status = 201
+        )
+
+def recipe_detail_api(request, pk):
+    try:
+        recipe = Recipe.objects.get(pk=pk)
+    except Recipe.DoesNotExist:
+        return JsonResponse(
+            { 'error': 'Рецепт не найден'},
+            status =404
+        )
+    return JsonResponse({'id': recipe.pk, 'name': recipe.name})
