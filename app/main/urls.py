@@ -28,4 +28,7 @@ urlpatterns = [
     path('recipe-api/recipes/<int:pk>', views.recipe_detail_api, name='recipe_detail_api'),
     path('recipe-api/register', views.register_api, name='register_api'),
     path('recipe-api/auth', views.auth_api, name='auth_api'),
+    # Открываем учебную страницу проверки API в браузере.
+    path('recipe-api/demo/', views.recipe_api_demo, name='recipe_api_demo'),
+    path('recipe-api/favorites', views.favorite_api, name='favorite_api'),
 ]

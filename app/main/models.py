@@ -49,3 +49,14 @@ class ApiToken(models.Model):
         on_delete=models.CASCADE
     )
     key = models.CharField(max_length=64, unique=True)
+
+class Favorite(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'recipe'],
+                name= 'unique_favorite_user_recipe',
+            ),
+        ]

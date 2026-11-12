@@ -1,7 +1,7 @@
 
 # Импортируем модели, формы и инструменты Django, которые используются ниже.
 from django.http import HttpResponse
-from main.models import Course, Recipe, Category, ApiToken
+from main.models import Course, Recipe, Category, ApiToken, Favorite
 from django.shortcuts import render, get_object_or_404, redirect
 from main.forms import CourseForm, RecipeForm, CategoryForm
 from django.contrib.auth import authenticate, login, logout
@@ -33,6 +33,11 @@ def index(request):
     }
     # Рендерим главную страницу с подготовленными данными.
     return render(request, 'main/index.html', context)
+
+# Показываем учебную страницу для проверки API рецептов в браузере.
+def recipe_api_demo(request):
+    # Передаём браузеру шаблон с формой входа и кнопками API.
+    return render(request, 'main/recipe_api_demo.html')
 
 # Показываем список неудалённых курсов.
 def course(request):
@@ -343,14 +348,15 @@ def chek_api_acess(request):
     if user.is_staff:
         return JsonResponse({
             'message': 'Forbidden for you'
-        }, status =401)    
+        }, status =403)
+    return user, None    
 
 
 # Обрабатываем API-запросы для списка и создания рецептов.
 def recipe_api(request):
     # Для GET возвращаем все рецепты в формате JSON.
     if request.method == 'GET':
-        error = chek_api_acess(request)
+        user, error = chek_api_acess(request)
         if error is not None:
             return error
         # Загружаем рецепты из базы данных.
@@ -411,7 +417,7 @@ def recipe_api(request):
 
 # Возвращаем один рецепт по его идентификатору через API.
 def recipe_detail_api(request, pk):
-    error = chek_api_acess(request)
+    user, error = chek_api_acess(request)
     if error is not None:
         return error
     # Пытаемся найти рецепт в базе данных.
@@ -518,4 +524,20 @@ def auth_api(request):
         'token': token_key
     }, status =200)
 
-    
+def favorite_api(request):
+    user, error = chek_api_acess(request)
+    if error is not None:
+        return error
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        recipe_id = data.get('recipe_id')
+
+        recipe = Recipe.objects.filter(pk = recipe_id).first()
+        if recipe is None:
+            return JsonResponse({
+                'message': 'Recipe not found'
+            }, status = 404)
+        favorite, created = Favorite.objects.get_or_create(
+            user = user,
+            recipe = recipe,
+        )

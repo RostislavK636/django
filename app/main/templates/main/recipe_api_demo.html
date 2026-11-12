@@ -1,0 +1,150 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Проверка API рецептов{% endblock %}
+
+{% block content %}
+<section>
+  <h2>Проверка API рецептов</h2>
+
+  <form id="login-form">
+    {# Передаём CSRF-токен JavaScript для POST-запроса входа. #}
+    {% csrf_token %}
+    <div>
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required>
+    </div>
+
+    <div>
+      <label for="password">Пароль</label>
+      <input id="password" name="password" type="password" required>
+    </div>
+
+    <button type="submit">Войти</button>
+  </form>
+
+  {# До успешного входа загрузка рецептов недоступна. #}
+  <button id="load-recipes" type="button" disabled>Загрузить рецепты</button>
+  {# Здесь показываем статус запроса или понятное сообщение об ошибке. #}
+  <p id="message" role="status"></p>
+  {# В этот список JavaScript добавит названия полученных рецептов. #}
+  <ul id="recipes"></ul>
+</section>
+
+<script>
+  // Храним токен только в памяти страницы и не выводим его пользователю.
+  let token = null;
+
+  // Находим элементы страницы, которыми управляет JavaScript.
+  const loginForm = document.querySelector('#login-form');
+  const loadRecipesButton = document.querySelector('#load-recipes');
+  const message = document.querySelector('#message');
+  const recipes = document.querySelector('#recipes');
+  const csrfToken = loginForm.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+  // Показываем пользователю текущий результат запроса.
+  function showMessage(text) {
+    message.textContent = text;
+  }
+
+  // Читаем ответ как текст, чтобы обработать и JSON, и HTML-страницу ошибки Django.
+  async function readResponse(response) {
+    const body = await response.text();
+
+    try {
+      return JSON.parse(body);
+    } catch (error) {
+      return {
+        message: 'Сервер вернул HTML вместо JSON.',
+      };
+    }
+  }
+
+  // Выбираем понятное сообщение из распространённых форматов ответа API.
+  function getErrorMessage(data) {
+    if (data.message) {
+      return data.message;
+    }
+
+    if (data.error) {
+      return data.error;
+    }
+
+    if (data.errors) {
+      return Object.values(data.errors).flat().join(' ');
+    }
+
+    return 'Не удалось выполнить запрос.';
+  }
+
+  // Отправляем введённые email и пароль на API авторизации.
+  loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    showMessage('Выполняется вход...');
+
+    try {
+      const response = await fetch('/recipe-api/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify({
+          email: loginForm.email.value,
+          password: loginForm.password.value,
+        }),
+      });
+      const data = await readResponse(response);
+
+      if (!response.ok) {
+        token = null;
+        loadRecipesButton.disabled = true;
+        showMessage(`HTTP ${response.status}: ${getErrorMessage(data)}`);
+        return;
+      }
+
+      // Сохраняем токен и разрешаем следующий API-запрос.
+      token = data.token;
+      if (!token) {
+        throw new Error('В ответе нет токена.');
+      }
+
+      loadRecipesButton.disabled = false;
+      showMessage('Вход выполнен');
+    } catch (error) {
+      token = null;
+      loadRecipesButton.disabled = true;
+      showMessage(`Ошибка: ${error.message}`);
+    }
+  });
+
+  // Загружаем рецепты с токеном в заголовке Authorization.
+  loadRecipesButton.addEventListener('click', async () => {
+    recipes.replaceChildren();
+    showMessage('Загружаются рецепты...');
+
+    try {
+      const response = await fetch('/recipe-api/recipes', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await readResponse(response);
+
+      if (!response.ok) {
+        showMessage(`HTTP ${response.status}: ${getErrorMessage(data)}`);
+        return;
+      }
+
+      // Добавляем названия рецептов в список на странице.
+      data.recipe.forEach((item) => {
+        const recipe = document.createElement('li');
+        recipe.textContent = item.name;
+        recipes.append(recipe);
+      });
+      showMessage('Рецепты загружены');
+    } catch (error) {
+      showMessage(`Ошибка: ${error.message}`);
+    }
+  });
+</script>
+{% endblock %}
