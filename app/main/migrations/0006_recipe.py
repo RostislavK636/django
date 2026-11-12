@@ -6,10 +6,13 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
+    # Описываем этап изменения структуры базы.
+    # Указываем предыдущие миграции для правильного порядка выполнения.
     dependencies = [
         ('main', '0005_category'),
     ]
 
+    # Перечисляем изменения структуры базы.
     operations = [
         migrations.CreateModel(
             name='Recipe',

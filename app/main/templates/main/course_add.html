@@ -1,8 +1,8 @@
-{% extends 'main/base.html' %} {% load static %} {% block title %} Добавить курс
-{% endblock %} {% block content %}
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  <div>
+{% extends 'main/base.html' %} {% load static %} {% block title %}{# Задаём заголовок вкладки браузера. #} Добавить курс
+{% endblock %} {% block content %}{# Размещаем основное содержимое страницы. #}
+<form method="post" enctype="multipart/form-data">{# Отправляем поля и выбранное действие обработчику формы. #}
+  {# Добавляем CSRF-токен для защиты отправляемой формы. #}{% csrf_token %}
+  <div>{# Группируем поля формы или данные карточки. #}
     <label for="course-name">Название</label>
     <input
       id="course-name"
@@ -10,17 +10,17 @@
       name="name"
       maxlength="30"
       required
-      class="{%if form.name.errors%} input-error {%endif%}" />
+      class="{%if form.name.errors%}{# Выделяем поле при наличии ошибки проверки. #} input-error {%endif%}" />
     {{form.name.errors}}
   </div>
-  <div>
+  <div>{# Группируем поля формы или данные карточки. #}
     <label for="course-description">Описание</label>
     <textarea
       id="course-description"
       name="description"
       maxlength="100"></textarea>
   </div>
-  <div>
+  <div>{# Группируем поля формы или данные карточки. #}
     <label for="course-price">Цена</label>
     <input
       id="course-price"

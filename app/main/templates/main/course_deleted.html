@@ -1,19 +1,19 @@
-{%extends 'main/base.html'%} {% block title %}Удалённые курсы{% endblock %}
-{%block content %} {% for curs in courses %}
+{%extends 'main/base.html'%} {% block title %}{# Задаём заголовок вкладки браузера. #}Удалённые курсы{% endblock %}
+{%block content %}{# Размещаем основное содержимое страницы. #} {% for curs in courses %}{# Выводим содержимое для каждого объекта списка. #}
 
-<div class="card">
+<div class="card">{# Группируем поля формы или данные карточки. #}
   <h3>{{ curs.name }}</h3>
   <p>{{ curs.price }}</p>
-  <form action="{% url 'main:course_restore' curs.id%}" method="post">
-    {%csrf_token%}
+  <form action="{% url 'main:course_restore' curs.id%}" method="post">{# Отправляем поля и выбранное действие обработчику формы. #}
+    {# Добавляем CSRF-токен для защиты отправляемой формы. #}{%csrf_token%}
     <button type="submit">Востановить</button>
   </form>
-  <form action="{%url 'main:course_deleted' curs.id%}" method="post">
-    {%csrf_token%}
+  <form action="{%url 'main:course_deleted' curs.id%}" method="post">{# Отправляем поля и выбранное действие обработчику формы. #}
+    {# Добавляем CSRF-токен для защиты отправляемой формы. #}{%csrf_token%}
     <button type="submit">Удалить совсем</button>
   </form>
 </div>
-{% empty %}
+{% empty %}{# Показываем запасной вариант при невыполненном условии или пустом списке. #}
 <p>Удалённых курсов пока нет.</p>
 
 {% endfor %} {% endblock %}

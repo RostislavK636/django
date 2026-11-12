@@ -1,5 +1,5 @@
-{% extends "main/base.html" %} {%load static%} {% block title %}
-{{title}}{%endblock %} {% block content %}
+{% extends "main/base.html" %} {%load static%} {% block title %}{# Задаём заголовок вкладки браузера. #}
+{{title}}{%endblock %} {% block content %}{# Размещаем основное содержимое страницы. #}
 <h2>{{title}}</h2>
 <p>Учитесь программированию и создавайте свои первые проекты.</p>
 <a href="{% url 'main:courses' %}">Выбрать курсы</a>{% endblock %}

@@ -1,22 +1,22 @@
-{% extends "main/base.html" %} {%load static%} {% block title %}
-{{title}}{%endblock %} {% block content %}
+{% extends "main/base.html" %} {%load static%} {% block title %}{# Задаём заголовок вкладки браузера. #}
+{{title}}{%endblock %} {% block content %}{# Размещаем основное содержимое страницы. #}
 
-<section>
+<section>{# Объединяем связанное содержимое в раздел. #}
   <h2>Добро пожаловать!</h2>
   <p>Учитесь программированию и создавайте свои первые проекты.</p>
   <a href="{% url 'main:add' %}">Добавить Крус</a>
 </section>
 
-<section>
+<section>{# Объединяем связанное содержимое в раздел. #}
   <h2>{{title}}</h2>
   <p>Выберите курс, чтобы начать обучение.</p>
-  {% if not course %}
+  {% if not course %}{# Показываем этот фрагмент при выполнении условия. #}
   <p class="empty-state">Курсов пока нет</p>
   {% endif %}
 </section>
-{% for curs in course %}
-<div class="card">
-  {% if curs.image %}
+{% for curs in course %}{# Выводим содержимое для каждого объекта списка. #}
+<div class="card">{# Группируем поля формы или данные карточки. #}
+  {% if curs.image %}{# Показываем изображение при наличии загруженного файла. #}
   <img src="{{ curs.image.url }}" alt="нет фото" />
   {% endif %}
   <h5>{{curs.name}}</h5>
@@ -26,8 +26,8 @@
     <a href="{% url 'main:course_detail' curs.id %}"> Подробнее </a>
     <p><a href="{%url 'main:course_edit' curs.id %}"> Изменить </a></p>
   </h5>
-  <form method="post" action="{% url 'main:course_restore' curs.id %}">
-    {% csrf_token %}
+  <form method="post" action="{% url 'main:course_restore' curs.id %}">{# Отправляем поля и выбранное действие обработчику формы. #}
+    {# Добавляем CSRF-токен для защиты отправляемой формы. #}{% csrf_token %}
     <button type="submit">Удалить</button>
   </form>
 </div>

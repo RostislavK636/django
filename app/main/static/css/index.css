@@ -1,4 +1,5 @@
 :root {
+  /* Задаём палитру, шрифт и межстрочный интервал. */
   color-scheme: light;
   font-family: "Segoe UI", Arial, sans-serif;
   color: #243047;
@@ -7,10 +8,12 @@
 }
 
 * {
+  /* Включаем отступы и границы в заданную ширину элементов. */
   box-sizing: border-box;
 }
 
 body {
+  /* Растягиваем страницу по высоте окна и располагаем её части вертикально. */
   margin: 0;
   min-height: 100vh;
   min-height: 100svh;
@@ -19,12 +22,14 @@ body {
 }
 
 header {
+  /* Оформляем шапку и её внутренние отступы. */
   padding: 48px max(24px, calc((100% - 1040px) / 2));
   background: #172d50;
   color: #fff;
 }
 
 h1 {
+  /* Задаём оформление и адаптивный размер главного заголовка. */
   background-color: aqua;
   color: #fff;
   margin: 0;
@@ -35,6 +40,7 @@ h1 {
 }
 
 main {
+  /* Ограничиваем ширину содержимого и задаём сетку разделов. */
   flex: 1;
   width: min(1040px, calc(100% - 48px));
   margin: 36px auto;
@@ -45,6 +51,7 @@ main {
 }
 
 section {
+  /* Оформляем раздел как светлый блок с рамкой и отступами. */
   min-width: 0;
   padding: 32px;
   background: #fff;
@@ -55,6 +62,7 @@ section {
 }
 
 h2 {
+  /* Оформляем заголовки разделов. */
   margin: 0 0 12px;
   color: #172d50;
   font-size: 1.5rem;
@@ -62,15 +70,18 @@ h2 {
 }
 
 p {
+  /* Задаём цвет текста и отступы абзацев. */
   margin: 0 0 16px;
   color: #536176;
 }
 
 section> :last-child {
+  /* Убираем нижний отступ последнего элемента раздела. */
   margin-bottom: 0;
 }
 
 .empty-state {
+  /* Выделяем сообщение об отсутствии данных. */
   margin-top: 24px;
   padding: 20px;
   border: 1px dashed #b8c8df;
@@ -80,6 +91,7 @@ section> :last-child {
 }
 
 .card {
+  /* Оформляем карточку объекта. */
   padding: 24px;
   border: 1px solid #dce4ef;
   border-radius: 12px;
@@ -88,34 +100,41 @@ section> :last-child {
 }
 
 .card img {
+  /* Умещаем изображение с сохранением пропорций. */
   display: block;
   max-width: 100%;
   height: auto;
 }
 
 .card h5 {
+  /* Оформляем заголовок карточки. */
   margin: 0 0 12px;
   color: #172d50;
   font-size: 1.2rem;
 }
 
 footer {
+  /* Отделяем подвал рамкой и выравниваем текст. */
   padding: 24px;
   border-top: 1px solid #dce4ef;
   text-align: center;
 }
 
 footer p {
+  /* Уменьшаем текст подвала и убираем отступ. */
   margin: 0;
   font-size: 0.875rem;
 }
 
 @media (max-width: 640px) {
+  /* Применяем вложенные правила на экранах до 640 пикселей. */
   header {
+  /* Оформляем шапку и её внутренние отступы. */
     padding: 32px 20px;
   }
 
   main {
+  /* Ограничиваем ширину содержимого и задаём сетку разделов. */
     width: calc(100% - 32px);
     margin: 24px auto;
     grid-template-columns: 1fr;
@@ -123,10 +142,12 @@ footer p {
   }
 
   section {
+  /* Оформляем раздел как светлый блок с рамкой и отступами. */
     padding: 24px;
   }
 }
 
 .input-error {
+  /* Выделяем поле с ошибкой красной рамкой. */
   border: 2px solid red;
 }

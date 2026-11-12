@@ -1,35 +1,35 @@
 {% load static %}
 <!doctype html>
 <html lang="ru">
-  <head>
+  <head>{# Задаём метаданные и подключаем стили. #}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}{# Задаём заголовок вкладки браузера. #}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/index.css' %}" />
   </head>
-  <body>
-    <header>
+  <body>{# Собираем видимую часть страницы. #}
+    <header>{# Выводим шапку сайта. #}
       <h1>Платформа обучения</h1>
-      <nav>
+      <nav>{# Собираем ссылки для переходов между страницами. #}
         <a href="{% url 'main:index' %}">Главная</a>
         <a href="{% url 'main:courses' %}">Курсы</a>
         <a href="{% url 'main:deleted_course' %}">Удалённые курсы</a>
         <a href="{% url "main:recipe" %}">Рецепты</a>
-        {% if user.is_authenticated %} <p> Вы вошли как {{user.username}} </p> 
-        <form action="{% url "main:logout"%}" method='post'>
-          {%csrf_token%}
+        {% if user.is_authenticated %}{# Показываем данные сессии и форму выхода вошедшему пользователю. #} <p> Вы вошли как {{user.username}} </p>
+        <form action="{% url "main:logout"%}" method='post'>{# Отправляем поля и выбранное действие обработчику формы. #}
+          {# Добавляем CSRF-токен для защиты отправляемой формы. #}{%csrf_token%}
           <button type='submit'>Выйти</button>
         </form>
-        {% else %}
+        {% else %}{# Показываем запасной вариант при невыполненном условии или пустом списке. #}
         <a href="{%url 'main:login'%}"> Войти </a>
         {% endif %}
       </nav>
-      {% block filter %}{% endblock filter %}
+      {% block filter %}{# Размещаем поиск и выбор категории. #}{% endblock filter %}
     </header>
 
-    <main>{% block content %}{% endblock %}</main>
+    <main>{# Выделяем основное содержимое. #}{% block content %}{# Размещаем основное содержимое страницы. #}{% endblock %}</main>
 
-    <footer>
+    <footer>{# Выводим нижнюю часть страницы. #}
       <p>Платформа обучения</p>
     </footer>
   </body>

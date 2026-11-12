@@ -1,11 +1,11 @@
 {% extends "main/base.html" %}
 
 
-{% block titlt %}Добавить рецепт{% endblock  %}
+{% block titlt %}{# Этот блок содержит текст заголовка добавления рецепта. #}Добавить рецепт{% endblock  %}
 
-{% block content %}
-<form method='post'>
-    {% csrf_token %}
+{% block content %}{# Размещаем основное содержимое страницы. #}
+<form method='post'>{# Отправляем поля и выбранное действие обработчику формы. #}
+    {# Добавляем CSRF-токен для защиты отправляемой формы. #}{% csrf_token %}
     <p>Название: {{ form.name }}</p>
     {{ form.name.errors }}
     <p>Категория: {{ form.Category }}</p>

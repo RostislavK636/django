@@ -1,8 +1,8 @@
 {% extends "main/base.html" %}
-{% block title %}Изменить Рецепт{% endblock  %}
-{% block content %}
-<form method='post'>
-    {% csrf_token %}
+{% block title %}{# Задаём заголовок вкладки браузера. #}Изменить Рецепт{% endblock  %}
+{% block content %}{# Размещаем основное содержимое страницы. #}
+<form method='post'>{# Отправляем поля и выбранное действие обработчику формы. #}
+    {# Добавляем CSRF-токен для защиты отправляемой формы. #}{% csrf_token %}
     <p>Название {{form.name}}</p>
     {{form.name.errors}}
     <p>Категория {{form.Category}}</p>

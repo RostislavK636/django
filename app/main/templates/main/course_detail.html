@@ -1,14 +1,14 @@
-{% extends "main/base.html" %} {% block title %}{{ title }}{% endblock %}
-{%block content %}
-<section>
+{% extends "main/base.html" %} {% block title %}{# Задаём заголовок вкладки браузера. #}{{ title }}{% endblock %}
+{%block content %}{# Размещаем основное содержимое страницы. #}
+<section>{# Объединяем связанное содержимое в раздел. #}
   <h2>{{ course.name }}</h2>
   <p>{{ course.description }}</p>
   <p>{{ course.price }} ₽</p>
 
   <a href="{% url 'main:courses' %}">Назад к курсам</a>
 </section>
-<section>
-  {% if course.image %}
+<section>{# Объединяем связанное содержимое в раздел. #}
+  {% if course.image %}{# Показываем изображение при наличии загруженного файла. #}
   <img src="{{course.image.url}}" alt="нет фото" />
   {% endif %}
 </section>

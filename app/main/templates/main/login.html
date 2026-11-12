@@ -1,24 +1,24 @@
-{% extends 'main/base.html' %} 
-{% block title %}Вход{% endblock %} 
-{% block content %}
-<section>
+{% extends 'main/base.html' %}
+{% block title %}{# Задаём заголовок вкладки браузера. #}Вход{% endblock %}
+{% block content %}{# Размещаем основное содержимое страницы. #}
+<section>{# Объединяем связанное содержимое в раздел. #}
   <h2>Вход администратора</h2>
 
-  <form method="post">
-    {% csrf_token %}
+  <form method="post">{# Отправляем поля и выбранное действие обработчику формы. #}
+    {# Добавляем CSRF-токен для защиты отправляемой формы. #}{% csrf_token %}
 
-    <div>
+    <div>{# Группируем поля формы или данные карточки. #}
       <label for="username">Логин</label>
       <input id="username" type="text" name="username" required />
     </div>
 
-    <div>
+    <div>{# Группируем поля формы или данные карточки. #}
       <label for="password">Пароль</label>
       <input id="password" type="password" name="password" required />
     </div>
 
     <button type="submit">Войти</button>
   </form>
-  {% if error %}{{error}}{% endif %}
+  {% if error %}{# Показываем этот фрагмент при выполнении условия. #}{{error}}{% endif %}
 </section>
 {% endblock %}

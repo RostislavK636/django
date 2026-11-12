@@ -5,11 +5,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
+    # Описываем этап изменения структуры базы.
+    # Помечаем начальную миграцию приложения.
     initial = True
 
+    # Указываем предыдущие миграции для правильного порядка выполнения.
     dependencies = [
     ]
 
+    # Перечисляем изменения структуры базы.
     operations = [
         migrations.CreateModel(
             name='Course',

@@ -1,17 +1,17 @@
 {% extends "main/base.html" %}
 
-{% block title %}{{title}}{% endblock  %}
+{% block title %}{# Задаём заголовок вкладки браузера. #}{{title}}{% endblock  %}
 
-{% block filter %}
+{% block filter %}{# Размещаем поиск и выбор категории. #}
 <p><a href="{% url "main:recipe_add" %}">Добавить курс</a></p>
 <p><a href="{% url "main:category_add" %}">Добавить категорию</a></p>
-<form action="" method='get'>
+<form action="" method='get'>{# Отправляем поля и выбранное действие обработчику формы. #}
     <input type="text" name='search', value='{{search}}'>
     <button type='submit'>Найти</button>
 </form>
 <p><a href="{% url "main:recipe" %}">Все категории</a></p>
-{% for category in categories %}
-<div>
+{% for category in categories %}{# Выводим содержимое для каждого объекта списка. #}
+<div>{# Группируем поля формы или данные карточки. #}
     <a href="{% url 'main:recipe' %}?category={{ category.id }}">
         {{ category.name }}
     </a>
@@ -20,8 +20,8 @@
         Изменить
     </a>
 
-    <form action="{% url 'main:category_delete' category.id %}" method="post">
-        {% csrf_token %}
+    <form action="{% url 'main:category_delete' category.id %}" method="post">{# Отправляем поля и выбранное действие обработчику формы. #}
+        {# Добавляем CSRF-токен для защиты отправляемой формы. #}{% csrf_token %}
         <button type="submit">Удалить</button>
     </form>
 </div>
@@ -29,13 +29,13 @@
     
 </form>
 {% endblock  %}
-{% block content %}
-{% for message in messages %}
+{% block content %}{# Размещаем основное содержимое страницы. #}
+{% for message in messages %}{# Выводим сообщение о результате операции. #}
 <p>{{message}}</p>
 {% endfor %}
-{% if recipe %}
-{% for i in recipe %}
-<div class='card'>
+{% if recipe %}{# Показываем этот фрагмент при выполнении условия. #}
+{% for i in recipe %}{# Выводим содержимое для каждого объекта списка. #}
+<div class='card'>{# Группируем поля формы или данные карточки. #}
     <h5>{{i.name}}</h5>
     <p>Категория: <b>{{i.Category.name}}</b> <a href="{% url "main:category_edit" i.Category.id%}">Изменить</a>
     </p>
@@ -43,7 +43,7 @@
 </div>
 {% endfor %}
 
-{% else %}
+{% else %}{# Показываем запасной вариант при невыполненном условии или пустом списке. #}
 <h3>Рецептов пока что нет</h3>
 {% endif %}
 {% endblock  %}

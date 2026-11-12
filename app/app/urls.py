@@ -20,12 +20,14 @@ from main import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+# Связываем URL-адреса с обработчиками запросов.
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls', namespace='main')),
     
 ]
 if settings.DEBUG:
+    # Подключаем раздачу загруженных файлов в режиме разработки.
     urlpatterns += static(
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT,

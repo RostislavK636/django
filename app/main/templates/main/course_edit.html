@@ -1,9 +1,9 @@
-{% extends 'main/base.html '%} 
-{% load static %} 
-{% block title %}Редактировать курс{% endblock %} 
-{% block content %}
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
+{% extends 'main/base.html '%}
+{% load static %}
+{% block title %}{# Задаём заголовок вкладки браузера. #}Редактировать курс{% endblock %}
+{% block content %}{# Размещаем основное содержимое страницы. #}
+<form method="post" enctype="multipart/form-data">{# Отправляем поля и выбранное действие обработчику формы. #}
+  {# Добавляем CSRF-токен для защиты отправляемой формы. #}{% csrf_token %}
 
   <label for="course-name">Название</label>
   <input

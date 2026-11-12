@@ -2,8 +2,10 @@
 from django.urls import path
 from main import views
 
+# Задаём пространство имён маршрутов.
 app_name='main'
 
+# Связываем URL-адреса с обработчиками запросов.
 urlpatterns = [
 
     path('', views.index, name='index'),
@@ -29,5 +31,6 @@ urlpatterns = [
     views.recipe_detail_api,
     name='recipe_detail_api'
 ),
+path('recipe-api/register', views.register_api, name='register_api'),
 ]
 

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Определяем корневую папку проекта.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -20,16 +21,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# Задаём ключ Django для подписи данных.
 SECRET_KEY = 'django-insecure-vjhaaud1^89b9ej*$)c5qj8ejv$-k@91=4wrfc=%#s#g4-b84='
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# Включаем подробные страницы ошибок.
 DEBUG = True
 
+# Задаём разрешённые имена хостов.
 ALLOWED_HOSTS = []
 
 
 # Application definition
 
+# Подключаем стандартные компоненты Django и приложение main.
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,6 +45,7 @@ INSTALLED_APPS = [
     'main',
 ]
 
+# Задаём порядок обработки запросов и ответов промежуточными слоями.
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -50,8 +56,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Указываем модуль корневых маршрутов.
 ROOT_URLCONF = 'app.urls'
 
+# Настраиваем поиск шаблонов и доступные им данные.
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -67,12 +75,14 @@ TEMPLATES = [
     },
 ]
 
+# Указываем точку входа WSGI-сервера.
 WSGI_APPLICATION = 'app.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Подключаем базу SQLite в папке проекта.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -84,6 +94,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
+# Подключаем проверки для операций Django, использующих валидацию паролей.
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -103,23 +114,31 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
+# Выбираем язык стандартных сообщений.
 LANGUAGE_CODE = 'ru'
 
+# Указываем часовой пояс проекта.
 TIME_ZONE = 'UTC'
 
+# Включаем поддержку переводов.
 USE_I18N = True
 
+# Включаем работу с датами, содержащими часовой пояс.
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
+# Задаём URL-префикс статических файлов.
 STATIC_URL = '/static/'
+# Задаём URL-префикс загруженных файлов.
 MEDIA_URL = '/media/'
+# Указываем папку загруженных файлов.
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
+# Выбираем тип автоматических первичных ключей.
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

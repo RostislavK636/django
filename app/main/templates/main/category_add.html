@@ -1,10 +1,10 @@
 {% extends "main/base.html" %}
 
-{% block title %}Добавить категорию{% endblock  %}
+{% block title %}{# Задаём заголовок вкладки браузера. #}Добавить категорию{% endblock  %}
 
-{% block content %}
-<form method='post'>
-    {% csrf_token %}
+{% block content %}{# Размещаем основное содержимое страницы. #}
+<form method='post'>{# Отправляем поля и выбранное действие обработчику формы. #}
+    {# Добавляем CSRF-токен для защиты отправляемой формы. #}{% csrf_token %}
     <p>Название категории: {{form.name}}</p>
     {{form.name.errors}}
     <button method='submit'>Добавить</button>

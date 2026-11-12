@@ -11,6 +11,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+# Выбираем модуль настроек, если он ещё не задан в окружении.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')
 
+# Создаём обработчик Django для веб-сервера.
 application = get_wsgi_application()
