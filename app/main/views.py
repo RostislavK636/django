@@ -1,7 +1,7 @@
 
 # Импортируем модели, формы и инструменты Django, которые используются ниже.
 from django.http import HttpResponse
-from main.models import Course, Recipe, Category
+from main.models import Course, Recipe, Category, ApiToken
 from django.shortcuts import render, get_object_or_404, redirect
 from main.forms import CourseForm, RecipeForm, CategoryForm
 from django.contrib.auth import authenticate, login, logout
@@ -22,6 +22,8 @@ from django.core.exceptions import ValidationError
 
 # Подключаем регулярные выражения для проверки пароля.
 import re
+
+import secrets
 
 # Показываем главную страницу приложения.
 def index(request):
@@ -322,24 +324,47 @@ def category_delete(request, category_id):
     return redirect('main:recipe')
         
 
+def chek_api_acess(request):
+    authorization = request.headers.get('Authorization', '')
+    parts = authorization.split()
+    
+    if len(parts) != 2 or parts[0].lower() != 'bearer':
+        return JsonResponse({
+            'message': 'Unauthenticated'
+        }, status = 401)
+    token_key=parts[1]
+    api_token = ApiToken.objects.filter(key=token_key).first()
+    
+    if api_token is None: 
+        return JsonResponse({
+            'message': 'Unauthenticated'
+        }, status = 401)
+    user = api_token.user
+    if user.is_staff:
+        return JsonResponse({
+            'message': 'Forbidden for you'
+        }, status =401)    
 
 
 # Обрабатываем API-запросы для списка и создания рецептов.
 def recipe_api(request):
     # Для GET возвращаем все рецепты в формате JSON.
     if request.method == 'GET':
+        error = chek_api_acess(request)
+        if error is not None:
+            return error
         # Загружаем рецепты из базы данных.
         recipe = Recipe.objects.all()
 
         # Создаём список данных для JSON-ответа.
-        data = []
+    data = []
 
         # Преобразуем каждый объект рецепта в словарь.
-        for item in recipe:
-            data.append({
-                'id': item.pk,
-                'name': item.name,
-            })
+    for item in recipe:
+        data.append({
+            'id': item.pk,
+            'name': item.name,
+        })
         # Возвращаем список рецептов клиенту API.
         return JsonResponse({'recipe': data})
     # Для POST создаём новый рецепт из JSON-данных запроса.
@@ -386,6 +411,9 @@ def recipe_api(request):
 
 # Возвращаем один рецепт по его идентификатору через API.
 def recipe_detail_api(request, pk):
+    error = chek_api_acess(request)
+    if error is not None:
+        return error
     # Пытаемся найти рецепт в базе данных.
     try:
         recipe = Recipe.objects.get(pk=pk)
@@ -457,4 +485,37 @@ def register_api(request):
             { 'success': True},
             status=201
         )
-        
+
+def auth_api(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+
+        email = data.get('email', '')
+        password = data.get('password', '')
+
+        user = authenticate(
+            request,
+            username=email,
+            password=password
+        )
+
+
+        if user is None:
+            return JsonResponse({
+                'message': 'Invalid data',
+                'errors': {'email': ['Invalid credentials']}
+            }, status=422)
+    if user.is_staff:
+        return JsonResponse({
+            'message': 'Forbidden for you'
+        }, status = 403)
+    token_key = secrets.token_hex(32)
+    ApiToken.objects.update_or_create(
+        user=user,
+        defaults={ 'key': token_key}
+    )
+    return JsonResponse({
+        'token': token_key
+    }, status =200)
+
+    

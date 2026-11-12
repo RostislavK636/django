@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 
@@ -41,3 +42,10 @@ class Recipe(models.Model):
     def __str__(self):
         # Возвращаем название для отображения объекта в формах и админке.
         return self.name
+
+class ApiToken(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE
+    )
+    key = models.CharField(max_length=64, unique=True)
